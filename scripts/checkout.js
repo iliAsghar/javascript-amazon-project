@@ -34,7 +34,7 @@ function refreshSummary(){
             </div>
             <div class="product-quantity">
               <span>
-                Quantity: <span class="quantity-label">${matchingProduct.quantity}</span>
+                Quantity: <span class="quantity-label">${cartItem.quantity}</span>
               </span>
               <span class="update-quantity-link link-primary js-update-btn" data-item-id="${matchingProduct.id}">
                 Update
@@ -104,4 +104,3 @@ function refreshSummary(){
   })
 }
 refreshSummary();
-
