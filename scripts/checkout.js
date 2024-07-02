@@ -2,23 +2,40 @@ let $ = document
 
 import {cart} from '../data/cart.js';
 import {products} from '../data/products.js';
+import {deliveryOptions} from '../data/deliveryOptions.js';
 import {formatCurrency} from '../scripts/utils/money.js';
 import {removeFromCart} from '../data/cart.js';
+import dayjs from 'https://unpkg.com/dayjs@1.11.11/esm/index.js';
 
 const cartContainer = $.querySelector('.js-cart-container')
 
-
 function refreshSummary(){
-  let html = ''
+  let cardSummaryHTML = ''
   cart.forEach(cartItem => {
     const productId = cartItem.productId;
     let matchingProduct = products.find(item => {
       return item.id === productId
     })
-    html += `
+
+    const deliveryOptionId = cartItem.deliveryOptionId;
+    
+    let deliveryOption;
+
+    deliveryOption = deliveryOptions.find((option) => {
+      return option.id === deliveryOptionId
+    })
+
+    const today = dayjs();
+    const deliveryDate = today.add(
+      deliveryOption.deliveryDays,
+      'days'
+    ).format('dddd, MMMM D')
+
+
+    cardSummaryHTML += `
       <div class="cart-item-container">
         <div class="delivery-date">
-          Delivery date: Tuesday, June 21
+          Delivery date: ${deliveryDate}
         </div>
   
         <div class="cart-item-details-grid">
@@ -49,51 +66,13 @@ function refreshSummary(){
             <div class="delivery-options-title">
               Choose a delivery option:
             </div>
-            <div class="delivery-option">
-              <input type="radio" checked
-                class="delivery-option-input"
-                name="delivery-option-${matchingProduct.id}">
-              <div>
-                <div class="delivery-option-date">
-                  Tuesday, June 21
-                </div>
-                <div class="delivery-option-price">
-                  FREE Shipping
-                </div>
-              </div>
-            </div>
-            <div class="delivery-option">
-              <input type="radio"
-                class="delivery-option-input"
-                name="delivery-option-${matchingProduct.id}">
-              <div>
-                <div class="delivery-option-date">
-                  Wednesday, June 15
-                </div>
-                <div class="delivery-option-price">
-                  $4.99 - Shipping
-                </div>
-              </div>
-            </div>
-            <div class="delivery-option">
-              <input type="radio"
-                class="delivery-option-input"
-                name="delivery-option-${matchingProduct.id}">
-              <div>
-                <div class="delivery-option-date">
-                  Monday, June 13
-                </div>
-                <div class="delivery-option-price">
-                  $9.99 - Shipping
-                </div>
-              </div>
-            </div>
+            ${deliveryOptionsHTML(matchingProduct,cartItem)}
           </div>
         </div>
       </div>
     `
   })
-  cartContainer.innerHTML = html
+  cartContainer.innerHTML = cardSummaryHTML
 
   $.querySelectorAll('.js-delete-btn').forEach(button => {
     button.addEventListener('click',() => {
@@ -104,3 +83,38 @@ function refreshSummary(){
   })
 }
 refreshSummary();
+
+function deliveryOptionsHTML(matchingProduct,cartItem){
+  let html = '';
+  deliveryOptions.forEach((deliveryOption) => {
+    const today = dayjs();
+    const deliveryDate = today.add(
+      deliveryOption.deliveryDays,
+      'days'
+    ).format('dddd, MMMM D')
+
+    const priceString = deliveryOption.priceCents === 0 
+      ? 'FREE' 
+      : `$${formatCurrency(deliveryOption.priceCents)} -`
+
+    const isChecked = deliveryOption.id === cartItem.deliveryOptionId
+
+    html += `
+    <div class="delivery-option">
+      <input type="radio"
+        ${isChecked ? 'checked': ''}
+        class="delivery-option-input"
+        name="delivery-option-${matchingProduct.id}">
+      <div>
+        <div class="delivery-option-date">
+          ${deliveryDate}
+        </div>
+        <div class="delivery-option-price">
+          ${priceString} Shipping
+        </div>
+      </div>
+    </div>
+    `
+  })
+  return html;
+}
