@@ -79,5 +79,16 @@ $.querySelectorAll('.js-add-to-cart').forEach(button => {
         quantity: 1
       })
     }
+    updateCartQuantity()
   })
 });
+
+const cartQuantityElem = $.querySelector('.cart-quantity')
+
+function updateCartQuantity(){
+  let totalQuantity = 0;
+  cart.forEach(item => {
+    totalQuantity += item.quantity;
+  });
+  cartQuantityElem.innerHTML = totalQuantity
+};
