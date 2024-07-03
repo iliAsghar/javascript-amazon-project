@@ -1,10 +1,11 @@
 let $ = document
 
-import {cart,updateDeliveryOption,removeFromCart} from '../../data/cart.js';
-import {getProduct} from '../../data/products.js';
-import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
-import {formatCurrency} from '../utils/money.js';
+import { cart,updateDeliveryOption,removeFromCart } from '../../data/cart.js';
+import { getProduct } from '../../data/products.js';
+import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.11/esm/index.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 
 const cartContainer = $.querySelector('.js-cart-container')
 
@@ -81,6 +82,8 @@ export function renderOrderSummary(){
       renderOrderSummary();
     })
   })
+
+  renderPaymentSummary();
 }
 
 function deliveryOptionsHTML(matchingProduct,cartItem){
