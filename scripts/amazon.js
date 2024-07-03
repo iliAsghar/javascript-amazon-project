@@ -1,5 +1,5 @@
 let $ = document;
-import {cart, addToCart} from '../data/cart.js';
+import {cart, addToCart, getTotalCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
@@ -75,10 +75,7 @@ $.querySelectorAll('.js-add-to-cart').forEach(button => {
 const cartQuantityElem = $.querySelector('.cart-quantity')
 
 function updateCartQuantity(){
-  let totalQuantity = 0;
-  cart.forEach(item => {
-    totalQuantity += item.quantity;
-  });
+  let totalQuantity = getTotalCartQuantity();
   cartQuantityElem.innerHTML = totalQuantity
 };
 
