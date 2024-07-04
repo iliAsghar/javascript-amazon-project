@@ -7,9 +7,10 @@ import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.11/esm/index.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 
-const cartContainer = $.querySelector('.js-cart-container')
 
 export function renderOrderSummary(){
+  const cartContainer = $.querySelector('.js-cart-container');
+
   let cartSummaryHTML = ''
   cart.forEach(cartItem => {
     const productId = cartItem.productId;
@@ -26,7 +27,7 @@ export function renderOrderSummary(){
 
 
     cartSummaryHTML += `
-      <div class="cart-item-container">
+      <div class="cart-item-container js-cart-item-container js-cart-item-container-${matchingProduct.id}">
         <div class="delivery-date">
           Delivery date: ${deliveryDate}
         </div>
@@ -42,14 +43,14 @@ export function renderOrderSummary(){
             <div class="product-price">
               ${formatCurrency(matchingProduct.priceCents)}
             </div>
-            <div class="product-quantity">
+            <div class="product-quantity js-product-quantity-${matchingProduct.id}">
               <span>
                 Quantity: <span class="quantity-label">${cartItem.quantity}</span>
               </span>
               <span class="update-quantity-link link-primary js-update-btn" data-item-id="${matchingProduct.id}">
                 Update
               </span>
-              <span class="delete-quantity-link link-primary js-delete-btn" data-item-id="${matchingProduct.id}">
+              <span class="delete-quantity-link link-primary js-delete-btn js-delete-btn-${matchingProduct.id}" data-item-id="${matchingProduct.id}">
                 Delete
               </span>
             </div>

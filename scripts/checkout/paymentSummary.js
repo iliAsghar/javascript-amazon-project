@@ -5,8 +5,8 @@ import { formatCurrency } from "../utils/money.js";
 
 let $ = document;
 
-let paymentSummaryContainer = $.querySelector('.js-payment-summary')
 export function renderPaymentSummary(){
+  let paymentSummaryContainer = $.querySelector('.js-payment-summary')
   const itemsCostCents = calculateItemsCost();
   const shippingCostCents = calculateShippingCost();
   const preTaxTotalCents = itemsCostCents + shippingCostCents;

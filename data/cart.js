@@ -15,7 +15,7 @@ export function loadFromStorage(){
 //         quantity: 1,
 //         deliveryOptionId: '2'
 //       }
-//     ]
+//     ];
 //     saveCartToStorage();
 //   }
 }
